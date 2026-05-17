@@ -254,9 +254,13 @@ The full integration test:
 
 ## Source And Thanks
 
-This project is inspired by and built with reference to the upstream project `xuanbingbingo/claude-standard-dev-team`.
+This project is inspired by and built with reference to the upstream project [`xuanbingbingo/claude-standard-dev-team`](https://github.com/xuanbingbingo/claude-standard-dev-team).
 
 Thanks to the original authors and contributors for publishing the agent definitions, workflow ideas, and engineering conventions that made this local MCP adaptation possible.
+
+## Contact
+
+- Maintainer contact: `feng#moonstack.org ('#' to '@')`
 
 ## License
 

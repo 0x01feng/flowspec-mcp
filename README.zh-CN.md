@@ -274,6 +274,10 @@ Released under the [MIT License](./LICENSE).
 
 ## 来源与致谢
 
-本项目参考了上游项目 `xuanbingbingo/claude-standard-dev-team` 的 Agent 定义、工作流设计和工程化思路，并在此基础上做了本地 MCP 化封装。
+本项目参考了上游项目 [`xuanbingbingo/claude-standard-dev-team`](https://github.com/xuanbingbingo/claude-standard-dev-team) 的 Agent 定义、工作流设计和工程化思路，并在此基础上做了本地 MCP 化封装。
 
 感谢原作者和贡献者公开这些规则、流程和实践经验，使 `FlowSpec MCP` 这样的本地化适配成为可能。
+
+## 联系方式
+
+- 维护者联系方式：`feng#moonstack.org ('#' to '@')`
