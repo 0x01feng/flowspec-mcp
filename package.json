@@ -1,0 +1,30 @@
+﻿{
+  "name": "flowspec-mcp",
+  "version": "1.1.0",
+  "description": "PRD-first multi-agent MCP server for standardized software delivery workflows.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "smoke": "node smoke-test.mjs",
+    "test:integration": "node integration-test.mjs",
+    "test": "node --check server.js && node --check smoke-test.mjs && node --check integration-test.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "multi-agent",
+    "prd-first",
+    "workflow",
+    "spec-driven"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "gray-matter": "^4.0.3",
+    "zod": "^4.4.3"
+  }
+}

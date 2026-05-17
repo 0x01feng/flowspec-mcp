@@ -1,0 +1,13 @@
+﻿{
+  "mcpServers": {
+    "flowspec-mcp": {
+      "command": "node",
+      "args": [
+        "C:\\path\\to\\flowspec-mcp\\server.js"
+      ],
+      "env": {
+        "TEAM_SOURCE_PATH": "C:\\path\\to\\claude-standard-dev-team"
+      }
+    }
+  }
+}
