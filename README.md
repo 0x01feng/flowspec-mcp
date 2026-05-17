@@ -1,89 +1,79 @@
-﻿# FlowSpec MCP
+# FlowSpec MCP
 
-`FlowSpec MCP` 是一个面向本地部署的多 Agent MCP 服务实现。它把 `claude-standard-dev-team` 中的 Agent 定义、阶段化协作规则和交付流程封装成标准 `stdio MCP server`，让你可以在不同的 MCP 宿主中，以更统一、更可控的方式运行完整的软件交付流程。
+English | [简体中文](./README.zh-CN.md)
 
-这个项目的核心理念不是“直接让模型开始写代码”，而是：
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Node.js >=20](https://img.shields.io/badge/Node.js-%3E%3D20-339933)](https://nodejs.org/)
+[![MCP](https://img.shields.io/badge/MCP-stdio-blue)](https://modelcontextprotocol.io/)
 
-- 先把需求整理成标准化 `PRD`
-- 再产出 `TECH_SPEC`、`API_CONTRACT`、`DB_SCHEMA`
-- 然后进入多 Agent 分工执行
-- 最后通过 QA、安全审查、代码评审与验收进行闭环
+`FlowSpec MCP` is a PRD-first multi-agent MCP server for standardized software delivery workflows. It wraps the agent definitions, collaboration rules, and staged delivery process from `claude-standard-dev-team` into a local `stdio` MCP service that can run across different MCP hosts.
 
 ## Why FlowSpec
 
-很多多 Agent 工具的问题，不是“Agent 不够多”，而是缺少统一规范。`FlowSpec MCP` 关注的是三个核心点：
+Many multi-agent tools fail not because they lack agents, but because they lack structure. `FlowSpec MCP` focuses on three ideas:
 
-- 规范先行：优先沉淀 `PRD`、技术契约和任务清单
-- 流程闭环：从规划到交付走完整阶段，而不是只做一次性生成
-- 模型解耦：不绑定单一模型或单一平台，适配支持 MCP 的宿主
+- `Spec first`: create `PRD`, contracts, and task lists before execution
+- `Workflow closed-loop`: move from planning to delivery through explicit phases
+- `Model-agnostic`: work with MCP-compatible hosts instead of tying the workflow to one model vendor
 
-## 核心能力
+In short:
 
-- 标准 `stdio MCP server`
-- `1` 个主 Agent + 多个子 Agent 的阶段化编排
-- 支持 `plain`、`minimal-json`、`full-artifact-json` 三种输出模式
-- 支持完整 `Phase 0 -> Phase 11` 工作流
-- 支持把阶段产物直接写入目标目录
-- 支持烟雾测试与完整流程集成测试
-- 支持在不依赖 `claude` CLI 的前提下本地运行
+> Write the spec first, then let the agents execute.
 
-## 适用场景
+## Highlights
 
-- 想把多 Agent 工作流本地化，而不是依赖单一闭源环境
-- 想把需求、架构、开发、验证过程标准化
-- 想把 MCP 作为统一接入层，对接不同模型或不同宿主
-- 想先建立“规范驱动开发”的流程，再逐步增强自动执行能力
+- Standard `stdio MCP server`
+- `1` orchestrator plus multiple specialist agents
+- Supports `plain`, `minimal-json`, and `full-artifact-json`
+- Supports full `Phase 0 -> Phase 11` workflow execution
+- Writes generated artifacts to a target directory
+- Includes smoke tests and full integration tests
+- Runs without the `claude` CLI
 
-## 推荐使用方式
+## Recommended Workflow
 
-建议按下面的方式使用本项目：
+Recommended order of use:
 
-1. 先生成标准化 `PRD`
-2. 再生成 `TECH_SPEC`、`API_CONTRACT`、`DB_SCHEMA`
-3. 让主 Agent 按阶段调度子 Agent
-4. 在 `Phase 1` 和 `Phase 2` 设人工检查点
-5. 通过 QA、安全与验收报告决定是否继续推进
+1. Generate a standardized `PRD`
+2. Generate `TECH_SPEC`, `API_CONTRACT`, and `DB_SCHEMA`
+3. Let the orchestrator dispatch specialist agents by phase
+4. Add human checkpoints after `Phase 1` and `Phase 2`
+5. Use QA, security, review, and acceptance reports as release gates
 
-一句话总结：
+## Model Recommendations
 
-> 先把规范写清楚，再让多 Agent 执行。
+Model quality varies a lot across structured output, code generation, and long-running workflows. For best results, prefer stronger models for end-to-end execution.
 
-## 模型建议
-
-不同模型在指令遵循、结构化输出、代码生成和长流程稳定性上差异明显。建议优先使用更稳定的模型执行完整工作流。
-
-推荐优先级：
+Recommended priority:
 
 - `Claude`
 - `GPT`
 - `DeepSeek V4 Pro`
 - `MiniMax`
 
-建议：
+Guidance:
 
-- 若宿主支持 `sampling`，优先接入上述强模型自动执行完整流程
-- 若宿主不支持 `sampling`，可先让 `FlowSpec MCP` 输出 prompt package，再交给目标模型执行
+- If your host supports `sampling`, connect a stronger model and run the full workflow automatically
+- If your host does not support `sampling`, let `FlowSpec MCP` produce prompt packages and pass them to your preferred model manually
 
-## 架构说明
+## Architecture
 
-默认工作方式为：
+Default workflow roles:
 
-- `orchestrator` 负责总流程调度
-- `product-manager` 负责 `PRD`
-- `software-architect` 负责技术契约
-- `ui-designer` 负责设计系统
-- `database-optimizer` 负责数据库实现
-- `backend-architect` 负责后端实现
-- `frontend-developer` 负责前端实现
-- `testing-evidence-collector` 负责 QA 证据
-- `security-engineer` 负责安全检查
-- `code-reviewer` 负责代码评审
-- `reality-checker` 负责最终验收
-- `technical-writer` 负责交付文档
+- `orchestrator` for global coordination
+- `product-manager` for `PRD`
+- `software-architect` for contracts and technical specs
+- `ui-designer` for design system output
+- `database-optimizer` for database implementation
+- `backend-architect` for backend implementation
+- `frontend-developer` for frontend implementation
+- `testing-evidence-collector` for QA evidence
+- `security-engineer` for security review
+- `code-reviewer` for code review
+- `reality-checker` for final acceptance
+- `technical-writer` for delivery documentation
 
-## 工具列表
-
-当前提供的 MCP tools：
+## Available Tools
 
 - `health_check`
 - `list_agents`
@@ -95,56 +85,56 @@
 - `run_governed_workflow`
 - `run_full_workflow`
 
-## 输出模式
+## Output Modes
 
 ### `plain`
 
-- 返回可读文本
-- 适合人工调试和 prompt 检查
+- Human-readable text
+- Best for manual prompt inspection
 
 ### `minimal-json`
 
-- 返回最小化结构化 JSON
-- 适合流程约束、规则验证和轻量自动化
+- Minimal structured JSON
+- Best for rule enforcement and lightweight orchestration
 
 ### `full-artifact-json`
 
-- 返回完整结构化 JSON
-- `artifacts` 中包含完整文件内容
-- 适合直接落盘完整阶段产物
+- Full structured JSON
+- Includes complete artifact contents in `artifacts`
+- Best for writing staged deliverables to disk
 
-## 环境要求
+## Requirements
 
 - Node.js `>= 20`
-- 本地可访问 `claude-standard-dev-team` 源仓库
+- Local access to the `claude-standard-dev-team` source repository
 
-默认会优先读取：
+Source resolution order:
 
-- 环境变量 `TEAM_SOURCE_PATH`
-- 若未设置，则尝试读取 `../claude-standard-dev-team`
+- `TEAM_SOURCE_PATH`
+- `../claude-standard-dev-team` if the env var is not set
 
-## 安装
+## Install
 
 ```powershell
 cd <PATH_TO_FLOWSPEC_MCP>
 npm install
 ```
 
-## 启动
+## Start
 
 ```powershell
 cd <PATH_TO_FLOWSPEC_MCP>
 npm start
 ```
 
-说明：
+Notes:
 
-- 服务启动后会阻塞等待 MCP 宿主连接，这是正常行为
-- 更推荐由 Claude Desktop、Cursor 或自定义 MCP Client 自动拉起
+- The process stays attached to stdio and waits for an MCP host to connect
+- In practice, it is better to let Claude Desktop, Cursor, or a custom MCP client launch it
 
-## MCP 配置
+## MCP Configuration
 
-通用样例见 [mcp.config.sample.json](./mcp.config.sample.json)。
+See [mcp.config.sample.json](./mcp.config.sample.json) for a generic example.
 
 ```json
 {
@@ -164,17 +154,17 @@ npm start
 
 ### Claude Desktop
 
-- 配置文件通常位于 `%APPDATA%\\Claude\\claude_desktop_config.json`
-- 可直接参考 [claude_desktop_config.sample.json](./claude_desktop_config.sample.json)
+- Config file usually lives at `%APPDATA%\\Claude\\claude_desktop_config.json`
+- See [claude_desktop_config.sample.json](./claude_desktop_config.sample.json)
 
 ### Cursor
 
-- 配置文件通常位于 `%USERPROFILE%\\.cursor\\mcp.json`
-- 配置结构与通用 MCP 配置相同
+- Config file usually lives at `%USERPROFILE%\\.cursor\\mcp.json`
+- Uses the same structure as the generic MCP config
 
-## 完整流程
+## Full Workflow
 
-默认完整流程包括：
+Default full workflow phases:
 
 - `Phase 0` `orchestrator`
 - `Phase 1` `product-manager`
@@ -192,15 +182,15 @@ npm start
 - `Phase 10` `reality-checker`
 - `Phase 11` `technical-writer`
 
-## 使用示例
+## Examples
 
-### 1. 只生成执行计划
+### Generate only the execution plan
 
 ```text
-build_execution_plan(userRequest="开发一个 Todo Lite 应用", mode="full-workflow")
+build_execution_plan(userRequest="Build a Todo Lite app", mode="full-workflow")
 ```
 
-### 2. 只运行一个 Agent
+### Run a single agent
 
 ```text
 run_agent(
@@ -210,21 +200,21 @@ run_agent(
   projectName="todo-lite",
   responseMode="full-artifact-json",
   targetDir="C:\\output\\todo-lite",
-  task="输出完整 PRD"
+  task="Generate a complete PRD"
 )
 ```
 
-### 3. 跑完整流程
+### Run the full workflow
 
 ```text
 run_full_workflow(
   projectName="todo-lite",
-  userRequest="开发一个完整的极简 Todo Lite 应用，覆盖新增、列表展示、完成切换，并交付完整文档、代码骨架与部署配置。",
+  userRequest="Build a minimal Todo Lite app with create, list, toggle, docs, code skeleton, and deployment files.",
   targetDir="C:\\output\\todo-lite"
 )
 ```
 
-## 测试
+## Testing
 
 ```powershell
 npm test
@@ -232,38 +222,42 @@ npm run smoke
 npm run test:integration
 ```
 
-完整流程测试会：
+The full integration test:
 
-- 启动本地 MCP 服务
-- 使用 mock sampling host 连接
-- 验证工具发现
-- 验证主 Agent 与完整流程执行
-- 将产物写入 `reports/` 目录
-- 生成测试报告
+- starts the local MCP server
+- connects a mock sampling host
+- verifies tool discovery
+- verifies orchestrator and full workflow execution
+- writes artifacts into `reports/`
+- generates test reports
 
-## 发布前建议
+## Publishing Notes
 
-发布到 GitHub 前建议：
+- Keep sample configs path-neutral
+- Do not commit local generated outputs such as `reports/`
+- Do not publish machine-specific usernames or absolute paths
+- Include `LICENSE`, `CHANGELOG`, release tags, and screenshots for a cleaner project page
 
-- 保持样例配置为占位符路径
-- 不提交 `reports/` 等本地生成物
-- 不提交包含本机用户名或绝对路径的文档
-- 增加 `LICENSE`
-- 增加 `CHANGELOG`
-- 增加 release tag 和截图说明
+## Limitations
 
-## 当前限制
-
-- 该项目是对上游 Agent 规则的本地 MCP 封装，不是上游官方 MCP Server
-- 若宿主不支持 `sampling`，自动执行会退化为 prompt package 输出
-- 当前验证重点是协议接入、编排、约束和完整阶段闭环，不等同于所有模型上的真实工程效果
+- This project is a local MCP adaptation of the upstream agent rules, not the official upstream MCP server
+- If the host does not support `sampling`, execution falls back to prompt packages
+- The current validation focuses on protocol integration, orchestration, constraints, and staged workflow closure, not on universal model quality guarantees
 
 ## Roadmap
 
-后续可以继续增强：
+- Retry logic and persisted workflow state
+- Resume from checkpoints
+- Stronger artifact validation
+- More model gateway integrations
+- Regression testing against real project repositories
 
-- 阶段失败重试与状态持久化
-- 断点恢复
-- 更强的产物校验
-- 对接更多模型网关
-- 对接真实业务仓库做回归测试
+## Source And Thanks
+
+This project is inspired by and built with reference to the upstream project `xuanbingbingo/claude-standard-dev-team`.
+
+Thanks to the original authors and contributors for publishing the agent definitions, workflow ideas, and engineering conventions that made this local MCP adaptation possible.
+
+## License
+
+Released under the [MIT License](./LICENSE).
