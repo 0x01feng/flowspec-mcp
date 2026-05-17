@@ -2,6 +2,8 @@
 
 [English](./README.md) | 简体中文
 
+别名：`一条道走到底（一路向前）`
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Node.js >=20](https://img.shields.io/badge/Node.js-%3E%3D20-339933)](https://nodejs.org/)
 [![MCP](https://img.shields.io/badge/MCP-stdio-blue)](https://modelcontextprotocol.io/)
